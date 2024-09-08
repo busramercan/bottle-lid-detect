@@ -10,17 +10,25 @@ from PIL import Image
 #cap.set(4, 480)
 
 # model
-model = YOLO("custom_model.pt")
+model = YOLO("custom_model.pt", task="detect")
 
 # object classes
 classNames = ["correct", "error", "not-lid"]
 
 print("TEST START")
-img = cv2.imread("test_photo3.jpeg")
+img = cv2.imread("test_photo.jpeg")
 
-start = time.time()
-results = model(img, stream=True)
-end = time.time()
+start =  time.time_ns() / (10 ** 9)
+results = model.predict(img, conf=0.5)
+end = time.time_ns() / (10 ** 9) 
+print("total time to detect: ")
+print((end-start)*1000)
+print("ms")
+
+
+start =  time.time_ns() / (10 ** 9)
+results = model.predict(img, conf=0.5, stream = True)
+end = time.time_ns() / (10 ** 9) 
 print("total time to detect: ")
 print((end-start)*1000)
 print("ms")
